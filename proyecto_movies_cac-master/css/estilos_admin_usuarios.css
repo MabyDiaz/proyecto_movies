@@ -1,0 +1,237 @@
+/* Estilos para el administrador de usuarios */
+* {
+  text-decoration: none;
+  list-style-type: none;
+}
+.admin-fondo {
+  background-color: #9f3647;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.admin-titulo {
+  color: #ede9ed;
+  text-align: center;
+  margin: 40px;
+  text-transform: uppercase;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.admin-table th,
+.admin-table td {
+  border: 1px solid #171616;
+  padding: 10px;
+  text-align: left;
+}
+
+.admin-table th {
+  background-color: #350202;
+}
+
+.admin-table tr:hover {
+  background-color: #be5365;
+}
+
+.admin-btn,
+.btn-modal-edit,
+.btn-volver,
+.btn-volver-admin {
+  width: 6rem;
+  display: inline-block;
+  color: white;
+  padding: 8px 16px;
+  margin-right: 10px;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.admin-btn-view {
+  background-color: #007bff;
+}
+
+.admin-btn-view:hover {
+  background-color: #0056b3;
+}
+
+.admin-btn-edit,
+.btn-modal-edit {
+  background-color: #4caf50;
+}
+
+.admin-btn-edit:hover,
+.btn-modal-edit:hover {
+  background-color: #2d7730;
+}
+
+.admin-btn-delete,
+.admin-btn-delete-modal {
+  background-color: #f44336;
+}
+
+.admin-btn-delete:hover,
+.admin-btn-delete-modal:hover {
+  background-color: #da190b;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  color: #000;
+  margin: 15% auto;
+  padding: 20px 20px 20px 40px;
+  border: none;
+  width: 30%;
+  height: auto;
+  box-shadow: 5px 5px rgba(0, 0, 0, 0.5);
+}
+
+.modal-content-delete {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.close {
+  color: #9f3647;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.modal-titulo {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.modal-titulo::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  height: 2px;
+  background-color: #9f3647;
+}
+
+.modal-titulo-delete,
+.modal-content-delete p,
+.modal-buttons-delete {
+  text-align: center;
+}
+
+.p-modal {
+  margin-top: 3px;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.contenido-modal-edit {
+  margin-top: 10px;
+}
+
+.label-modal-edit {
+  font-weight: bold;
+}
+
+.input-modal-edit {
+  width: 15rem;
+  padding: 5px;
+}
+
+.btn-modal-edit {
+  width: 10rem;
+  margin-top: 15px;
+}
+
+.modal-content-delete p {
+  margin: 20px;
+  font-size: 18px;
+}
+
+.admin-btn-cancel {
+  width: 10rem;
+  margin-top: 15px;
+  background-color: #007bff;
+}
+
+.admin-btn-delete-modal {
+  width: 10rem;
+}
+
+.btn-volver,
+.btn-volver-admin {
+  width: 8rem;
+  float: right;
+  background-color: #350202;
+  color: white;
+  margin: 12rem 15rem 3rem 80rem;
+  padding: 1rem;
+  transition: all 1s ease;
+}
+
+.btn-volver:hover,
+.btn-volver-admin:hover {
+  background-color: transparent;
+  border: 3px solid #350202;
+}
+
+.btn-volver-admin {
+  width: 12rem;
+}
+
+.container-admin {
+  width: 300px;
+  height: 300px;
+  margin-top: 50px;
+  padding: 15px;
+  background-color: #000;
+}
+
+.container-admin .admin-links {
+  text-align: center;
+}
+
+.container-admin .admin-links li {
+  padding: 25px;
+}
+
+.container-admin .admin-links li:hover {
+  background-color: #9f3647;
+}
+
+.container-admin .admin-links li a {
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
