@@ -9,9 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Si la validación del formulario no es exitosa
     if (!validateForm()) {
       // Muestra un mensaje en la consola indicando que el formulario no es válido
-      console.log(
-        'El formulario no es válido. Por favor, corrige los errores.'
-      );
+      console.log('El formulario no es válido. Por favor, corrige los errores.');
     } else {
       // Si la validación del formulario es exitosa, muestra un mensaje en la consola
       console.log('El formulario es válido. Enviar datos...');
@@ -32,13 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
             password: password,
           }),
         });
-        if (!response.ok) {
-          throw new Error('Error al iniciar sesión');
-        }
-
+        
         const data = await response.json();
 
-        if (data.token) {
+        if (response.ok) {
+          console.log('Inicio de sesión exitoso:', data);
           localStorage.setItem('token', data.token);
           localStorage.setItem('isAdmin', data.isAdmin);
 
@@ -59,11 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Función para validar todo el formulario
   const validateForm = () => {
     let isValid = true;
-    isValid =
-      validateEmailField('email', 'El correo electrónico no es válido') &&
-      isValid; // Validar campo de email
-    isValid =
-      validateField('password', 'La contraseña es obligatoria') && isValid; // Validar campo de contraseña
+    isValid = validateEmailField('email', 'El correo electrónico no es válido') && isValid; // Validar campo de email
+    isValid = validateField('password', 'La contraseña es obligatoria') && isValid; // Validar campo de contraseña
     return isValid;
   };
 
