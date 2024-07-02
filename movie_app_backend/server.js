@@ -42,7 +42,8 @@ const __dirname = path.dirname(__filename);
 // Servir archivos estáticos desde la carpeta del frontend
 app.use(express.static(path.join(__dirname, '../proyecto_movies_cac-master')));
 
-// Rutas para servir los archivos del frontend
+// Rutas para servir los archivos del frontend 
+// el archivo de registro
 app.get('/register', (req, res) => {
   const filePath = path.join(
     __dirname,

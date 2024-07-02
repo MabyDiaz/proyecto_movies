@@ -113,47 +113,79 @@ export const deleteUser = (req, res) => {
 };
 
 // Iniciar sesión
-export const loginUser = (req, res) => {
+export const loginUser = async (req, res) => {
   const { email, password } = req.body;
-  console.log('Datos recibidos:', email, password);
 
-  const query = 'SELECT * FROM usuarios WHERE email = ?';
+  try {
+    const query = 'SELECT * FROM usuarios WHERE email = ?';
+    connection.query(query, [email], async (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Error al obtener el usuario' });
+      }
+      if (results.length === 0) {
+        return res.status(400).json({ error: 'Usuario no encontrado' });
+      }
 
-  connection.query(query, [email], async (err, results) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: 'Error al iniciar sesión' });
-    }
+      const user = results[0];
+      const passwordMatch = await bcrypt.compare(password, user.password);
 
-    if (results.length === 0) {
-      console.log('Email no encontrado');
-      return res.status(401).json({ error: 'Email o contraseña incorrectos' });
-    }
+      if (!passwordMatch) {
+        return res.status(400).json({ error: 'Contraseña incorrecta' });
+      }
 
-    const user = results[0];
-    console.log('Usuario encontrado:', user);
+      const token = jwt.sign(
+        { id: user.id, isAdmin: user.isAdmin },
+        SECRET_KEY,
+        { expiresIn: '1h' }
+      );
+      req.session.isAdmin = user.isAdmin;
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    console.log('Contraseña válida:', isPasswordValid);
-
-    if (!isPasswordValid) {
-      console.log('Contraseña incorrecta');
-      return res.status(401).json({ error: 'Email o contraseña incorrectos' });
-    }
-
-    req.session.userId = user.id;
-    req.session.username = user.nombre;
-    req.session.isAdmin = user.isAdmin;
-    console.log('Sesión creada:', req.session);
-
-    const token = jwt.sign({ id: user.id, isAdmin: user.isAdmin }, SECRET_KEY, {
-      expiresIn: '1h',
+      res.json({ token, isAdmin: user.isAdmin, redirectTo: '/index.html' });
     });
-    console.log('Token generado:', token);
-
-    // Redirigir al usuario al index.html después de iniciar sesión
-    res
-      .status(200)
-      .json({ token, isAdmin: user.isAdmin, redirectTo: '/index.html' });
-  });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error en el servidor' });
+  }
 };
+
+// export const loginUser = (req, res) => {
+//   const { email, password } = req.body;
+//   console.log('Datos recibidos:', email, password);
+
+//   const query = 'SELECT * FROM usuarios WHERE email = ?';
+
+//   connection.query(query, [email], async (err, results) => {
+//     if (err) {
+//       console.error(err);
+//       return res.status(500).json({ error: 'Error al iniciar sesión' });
+//     }
+
+//     if (results.length === 0) {
+//       return res.status(401).json({ error: 'Email o contraseña incorrectos' });
+//     }
+
+//     const user = results[0];
+//     console.log('Usuario encontrado:', user);
+//     const isPasswordValid = await bcrypt.compare(password, user.password);
+
+//     if (!isPasswordValid) {
+//       return res.status(401).json({ error: 'Email o contraseña incorrectos' });
+//     }
+
+//     req.session.userId = user.id;
+//     req.session.username = user.nombre;
+//     req.session.isAdmin = user.isAdmin;
+//     console.log('Sesión creada:', req.session);
+
+//     const token = jwt.sign({ id: user.id, isAdmin: user.isAdmin }, SECRET_KEY, {
+//       expiresIn: '1h',
+//     });
+//     console.log('Token generado:', token);
+
+//     // Redirigir al usuario al index.html después de iniciar sesión
+//     res
+//       .status(200)
+//       .json({ token, isAdmin: user.isAdmin, redirectTo: '/index.html' });
+//   });
+// };
