@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Redirigir después de un pequeño retraso
       setTimeout(() => {
         window.location.href = 'http://localhost:3000/pages/iniciosesion.html';
-      }, 3000); // Redirige después de 3 segundos
+      }, 1500); // Redirige después de 1,5 segundos
     } catch (error) {
       console.error('Error al registrar usuario:', error);
     }
