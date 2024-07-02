@@ -23,16 +23,13 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     try {
-      const response = await fetch(
-        'https://proyecto-movies-7vlw.onrender.com/register',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(userData),
-        }
-      );
+      const response = await fetch('http://localhost:3000/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
 
       const data = await response.json();
 
@@ -47,8 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Redirigir después de un pequeño retraso
       setTimeout(() => {
-        window.location.href =
-          'https://proyecto-movies-7vlw.onrender.com/pages/iniciosesion.html';
+        window.location.href = 'http://localhost:3000/pages/iniciosesion.html';
       }, 1500); // Redirige después de 3 segundos
     } catch (error) {
       console.error('Error al registrar usuario:', error);

@@ -65,7 +65,7 @@ window.onclick = function (event) {
 };
 
 function fetchUsers() {
-  fetch('https://proyecto-movies-7vlw.onrender.com/users')
+  fetch('http://localhost:3000/users')
     .then((response) => response.json())
     .then((users) => {
       const userList = document.getElementById('user-list');
@@ -99,7 +99,7 @@ function fetchUsers() {
 }
 
 function viewUser(userId) {
-  fetch(`https://proyecto-movies-7vlw.onrender.com/users/${userId}`)
+  fetch(`http://localhost:3000/users/${userId}`)
     .then((response) => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -123,7 +123,7 @@ function viewUser(userId) {
 }
 
 function editUser(userId) {
-  fetch(`https://proyecto-movies-7vlw.onrender.com/users/${userId}`)
+  fetch(`http://localhost:3000/users/${userId}`)
     .then((response) => response.json())
     .then((user) => {
       document.getElementById('editUserId').value = user.id;
@@ -152,7 +152,7 @@ document.getElementById('editUserForm').addEventListener('submit', (event) => {
   const userCountry = document.getElementById('editUserCountry').value;
   const userIsAdmin = document.getElementById('editUserIsAdmin').checked;
 
-  fetch(`https://proyecto-movies-7vlw.onrender.com/users/${userId}`, {
+  fetch(`http://localhost:3000/users/${userId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -185,7 +185,7 @@ function updateUser() {
     pais: document.getElementById('pais').value,
   };
 
-  fetch(`https://proyecto-movies-7vlw.onrender.com/users/${userId}`, {
+  fetch(`http://localhost:3000/users/${userId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -215,7 +215,7 @@ function confirmDeleteUser(userId) {
 }
 
 function deleteUser(userId) {
-  fetch(`https://proyecto-movies-7vlw.onrender.com/users/${userId}`, {
+  fetch(`http://localhost:3000/users/${userId}`, {
     method: 'DELETE',
   })
     .then((response) => response.json())
