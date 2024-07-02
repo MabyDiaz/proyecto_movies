@@ -17,7 +17,7 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use(
   cors({
-    origin: '*', // Permite todas las solicitudes CORS (ajustar según el entorno de producción)
+    origin: 'https://proyecto-movies-7vlw.onrender.com',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
