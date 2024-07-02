@@ -68,13 +68,13 @@ app.post('/login', loginUser); //para iniciar sesión
 app.use('/', userRoutes);
 
 // Rutas protegidas
-app.get('/ruta-protegida', verifyToken, (req, res) => {
-  res.send('Esta es una ruta protegida');
-});
+// app.get('/ruta-protegida', verifyToken, (req, res) => {
+//   res.send('Esta es una ruta protegida');
+// });
 
-app.get('/admin', verifyToken, verifyAdmin, (req, res) => {
-  res.send('Esta es una ruta solo para administradores');
-});
+// app.get('/admin', verifyToken, verifyAdmin, (req, res) => {
+//   res.send('Esta es una ruta solo para administradores');
+// });
 
 app.get('/api/check-admin', (req, res) => {
   if (req.session.isAdmin) {
