@@ -126,14 +126,18 @@ export const loginUser = (req, res) => {
     }
 
     if (results.length === 0) {
+      console.log('Email no encontrado');
       return res.status(401).json({ error: 'Email o contraseña incorrectos' });
     }
 
     const user = results[0];
     console.log('Usuario encontrado:', user);
+
     const isPasswordValid = await bcrypt.compare(password, user.password);
+    console.log('Contraseña válida:', isPasswordValid);
 
     if (!isPasswordValid) {
+      console.log('Contraseña incorrecta');
       return res.status(401).json({ error: 'Email o contraseña incorrectos' });
     }
 

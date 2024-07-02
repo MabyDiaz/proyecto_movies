@@ -7,6 +7,7 @@ import userRoutes from './routes/usuario_routes.js';
 import { createUser, loginUser } from './controllers/usuario_controller.js';
 import dotenv from 'dotenv';
 import session from 'express-session';
+import { verifyToken, verifyAdmin } from './middlewares/verifyToken.js'; // Importa los middlewares
 
 dotenv.config(); // Cargar variables de entorno desde .env
 
@@ -25,11 +26,11 @@ app.use(
 
 app.use(
   session({
-    secret: 'secret-key',
+    secret: 'secret-key', // Cambia esto a una cadena secreta más segura
     resave: false,
     saveUninitialized: false,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24,
+      maxAge: 1000 * 60 * 60 * 24, // 1 día
     },
   })
 );
@@ -41,7 +42,7 @@ const __dirname = path.dirname(__filename);
 // Servir archivos estáticos desde la carpeta del frontend
 app.use(express.static(path.join(__dirname, '../proyecto_movies_cac-master')));
 
-// Ruta para servir el archivo de registro
+// Rutas para servir los archivos del frontend
 app.get('/register', (req, res) => {
   const filePath = path.join(
     __dirname,
@@ -50,12 +51,29 @@ app.get('/register', (req, res) => {
   res.sendFile(filePath);
 });
 
-// Rutas  POST
+app.get('/login', (req, res) => {
+  const filePath = path.join(
+    __dirname,
+    '../proyecto_movies_cac-master/pages/iniciosesion.html'
+  );
+  res.sendFile(filePath);
+});
+
+// Rutas POST
 app.post('/register', createUser); //para registrar un nuevo usuario
 app.post('/login', loginUser); //para iniciar sesión
 
 // Usar rutas de usuarios
 app.use('/', userRoutes);
+
+// Rutas protegidas
+app.get('/ruta-protegida', verifyToken, (req, res) => {
+  res.send('Esta es una ruta protegida');
+});
+
+app.get('/admin', verifyToken, verifyAdmin, (req, res) => {
+  res.send('Esta es una ruta solo para administradores');
+});
 
 app.get('/api/check-admin', (req, res) => {
   if (req.session.isAdmin) {
