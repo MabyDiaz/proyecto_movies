@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Películas</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+
+<body class="admin-fondo">
+
+    <!-- Botón para abrir modal de creación -->
+    <div class="btn-titulo-container">
+        <button class="admin-btn admin-btn-create" id="openCreateModal">Crear Película</button>
+        <h1 class="admin-titulo">Administración de Películas</h1>
+        <a class="btn-volver1" href="admin_panel.html">Volver</a>
+    </div>
+
+    <table class="admin-table" id="movie-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th class="title-col">Título</th>
+                <th class="desc-col">Descripción</th>
+                <th class="fecha-col">Fecha de Estreno</th>
+                <th class="tmdb-col">ID TMDB</th>
+                <th class="calif-col">Calificación</th>
+                <th class="poster-col">Poster</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="movie-list"></tbody>
+    </table>
+
+
+
+    <!-- Modal de creación de película -->
+    <div id="createMovieModal" class="modal">
+        <div class="modal-content">
+            <span class="close-create">&times;</span>
+            <h2 class="modal-titulo">Crear Película</h2>
+            <form id="createMovieForm">
+
+                <div class="contenido-modal-crear">
+                    <label class="label-modal-crear" for="createMovieTitle">Título:</label><br>
+                    <input class="input-modal-crear" type="text" id="createMovieTitle" name="createMovieTitle"
+                        required><br>
+                </div>
+
+                <div class="contenido-modal-crear">
+                    <label class="label-modal-crear" for="createMovieDescription">Descripción:</label><br>
+                    <textarea id="createMyovieDescription" name="createMovieDescription" required></textarea><br>
+                </div>
+
+                <div class="contenido-modal-crear">
+                    <label class="label-modal-crear" for="createMovieReleaseDate">Fecha de Estreno:</label><br>
+                    <input class="input-modal-crear" type="text" id="createMovieReleaseDate"
+                        name="createMovieReleaseDate" required><br>
+                </div>
+
+                <div class="contenido-modal-crear">
+                    <label class="label-modal-crear" for="createMovieTmdb">ID TMDB:</label><br>
+                    <input class="input-modal-crear" type="text" id="createMovieTmdb" name="createMovieTmdb"
+                        required><br>
+                </div>
+
+                <div class="contenido-modal-crear">
+                    <label class="label-modal-crear" for="createMovieCalif">Calificación:</label><br>
+                    <input class="input-modal-crear" type="text" id="createMovieCalif" name="createMovieCalif"
+                        required><br>
+                </div>
+
+                <div class="contenido-modal-crear">
+                    <label class="label-modal-crear" for="createMoviePoster">URL del Poster:</label><br>
+                    <input class="input-modal-crear" type="text" id="createMoviePoster" name="createMoviePoster"
+                        required>
+                </div>
+
+                <div class="modal-buttons modal-buttons-delete">
+                    <button type="submit" class="admin-btn admin-btn-submit">Crear Película</button>
+                    <button type="button" class="admin-btn admin-btn-cancel" id="cancelCreate">Cancelar</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabla de películas -->
+    <table id="movie-list">
+        <!-- Aquí se llenarán dinámicamente las películas -->
+    </table>
+
+    <!-- Modal para ver detalles de la película -->
+    <div id="movieModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 class="modal-titulo">Detalle de la Película</h2>
+            <p class="p-modal"><strong>ID:</strong> <span id="modalMovieId"></span></p>
+            <p class="p-modal"><strong>Título:</strong> <span id="modalMovieTitle"></span></p>
+            <p class="p-modal"><strong>Descripción:</strong> <span id="modalMovieDescription"></span></p>
+            <p class="p-modal"><strong>Fecha de Estreno:</strong> <span id="modalMovieDate"></span></p>
+            <p class="p-modal"><strong>ID TMDB:</strong> <span id="modalMovieDate"></span></p>
+            <p class="p-modal"><strong>Calificación:</strong> <span id="modalMovieDate"></span></p>
+            <p class="p-modal"><strong>Poster:</strong></p><span id="modalMoviePoster"></span></p>
+            <!-- <img id="modalMoviePoster" src="" alt="Poster de la película" class="modal-poster"> -->
+        </div>
+    </div>
+
+    <!-- Modal para editar detalles de la película -->
+    <div id="editMovieModal" class="modal">
+        <div class="modal-content">
+            <h2 class="modal-titulo">Editar Película</h2>
+            <form id="editMovieForm" enctype="multipart/form-data">
+                <input type="hidden" id="editMovieId" name="movieId">
+
+                <div class="contenido-modal-edit">
+                    <label class="label-modal-edit" for="editMovieTitle">Título:</label>
+                    <input class="input-modal-edit" type="text" id="editMovieTitle" name="movieTitle">
+                </div>
+
+                <div class="contenido-modal-edit">
+                    <label class="label-modal-edit" for="editMovieDescription">Descripción:</label>
+                    <textarea class="input-modal-edit" id="editMovieDescription" name="movieDescription"></textarea>
+                </div>
+
+                <div class="contenido-modal-edit">
+                    <label class="label-modal-edit" for="editMovieDate">Fecha de Estreno:</label>
+                    <input type="text" class="input-modal-edit" id="editMovieDate" name="movieDate"></input>
+                </div>
+
+                <div class="contenido-modal-edit">
+                    <label class="label-modal-edit" for="editMovieIDTMDB">ID TMDB:</label>
+                    <input type="text" class="input-modal-edit" id="editMovieIDTMDB" name="movieIDTMDB"></input>
+                </div>
+
+                <div class="contenido-modal-edit">
+                    <label class="label-modal-edit" for="editMovieCalif">Calificación:</label>
+                    <input type="text" class="input-modal-edit" id="editMovieCalif" name="movieCalif"></input>
+                </div>
+
+                <div class="contenido-modal-edit">
+                    <label class="label-modal-edit" for="editMoviePoster">Poster:</label>
+                    <input type="file" id="editMoviePoster" name="moviePoster">
+                </div>
+
+                <button class="btn-modal-edit" type="submit">Guardar Cambios</button>
+                <button type="button" id="cancelEdit" class="admin-btn admin-btn-cancel">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación de eliminación -->
+    <div id="deleteConfirmationModal" class="modal">
+        <div class="modal-content modal-content-delete">
+            <h2 class="modal-titulo modal-titulo-delete">Confirmar Eliminación</h2>
+            <p>¿Estás seguro de eliminar esta película?</p>
+            <div class="modal-buttons modal-buttons-delete">
+                <button class="admin-btn admin-btn-delete-modal" id="confirmDelete">Eliminar</button>
+                <button class="admin-btn admin-btn-cancel" id="cancelDelete">Cancelar</button>
+            </div>
+            <p id="deleteSuccessMessage" style="display: none; color: green;">¡Eliminación exitosa!</p>
+        </div>
+    </div>
+
+    <a class="btn-volver" href="admin_panel.html">Volver</a>
+
+    <script src="../js/admin_peliculas.js"></script>
+</body>
+
+</html>

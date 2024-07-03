@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 import { createConnection } from 'mysql2';
 
-
 dotenv.config();
 
 const dbConfig = {
@@ -9,6 +8,7 @@ const dbConfig = {
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
+  port: process.env.DB_PORT,
 };
 
 const connection = createConnection(dbConfig);
