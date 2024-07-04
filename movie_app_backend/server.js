@@ -98,10 +98,21 @@ dotenv.config(); // Cargar variables de entorno desde .env
 
 const app = express();
 const port = process.env.PORT || 3000;
-const upload = multer({ dest: 'uploads/' }); // Carpeta donde se guardarán los archivos subidos
+
+// Configurar multer para manejar las cargas de archivos
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+const upload = multer({ storage: storage }); // Configura multer
 
 // Middleware
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: '*',
@@ -146,6 +157,14 @@ app.post('/upload', upload.single('file'), (req, res) => {
   // Aquí puedes procesar el archivo subido si es necesario
   res.json({ filename: req.file.filename }); // Devuelve el nombre del archivo guardado
 });
+
+
+// Endpoint para subir imágenes
+app.post('/upload', upload.single('file'), (req, res) => {
+  // Aquí puedes procesar el archivo subido si es necesario
+  res.json({ filename: req.file.filename }); // Devuelve el nombre del archivo guardado
+});
+
 
 // Usar rutas de usuarios
 app.use('/', userRoutes);

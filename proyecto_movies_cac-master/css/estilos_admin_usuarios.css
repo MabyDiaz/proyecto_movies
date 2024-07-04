@@ -339,6 +339,16 @@
   background-color: #c82333;
 }
 
+.admin-btn-cancel {
+  width: 10rem;
+  margin-top: 15px;
+  background-color: #0873e6;
+}
+
+.admin-btn-cancel:hover {
+  background-color: #3f96f3;
+}
+
 .btn-volver,
 .btn-volver-admin {
   width: 100px;
@@ -356,6 +366,7 @@
 }
 
 .admin-btn-delete-modal {
+  width: 10rem;
   background-color: #dc3545;
   margin: 0 5px;
 }
@@ -372,15 +383,6 @@
   background-color: #218838;
 }
 
-.admin-btn-cancel {
-  background-color: #dc3545;
-  margin-left: 10px;
-}
-
-.admin-btn-cancel:hover {
-  background-color: #c82333;
-}
-
 /* Estilos para los Modales */
 .modal {
   display: none;
@@ -393,8 +395,8 @@
   overflow: auto;
   background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.4);
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center;
+  align-items: center; */
 }
 
 .modal-content {
@@ -404,6 +406,7 @@
   border: 1px solid #888;
   width: 50%;
   text-align: left;
+  line-height: 2rem;
 }
 
 .modal-content-delete {
@@ -435,6 +438,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.admin-btn-submit {
+  width: 10rem;
 }
 
 .modal-titulo-delete {
@@ -630,17 +637,29 @@
 .contenido-modal-crear,
 .contenido-modal-edit {
   margin-top: 10px;
+  display: flex;
+  align-items: center;
+  text-align: left;
 }
 
 .label-modal-crear,
 .label-modal-edit {
   font-weight: bold;
+  margin-right: 0.5rem;
 }
 
 .input-modal-crear,
-.input-modal-edit {
+.input-modal-edit,
+textarea {
   width: 15rem;
   padding: 5px;
+  height: 1.4rem; /* */
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }
 
 .btn-modal-edit {

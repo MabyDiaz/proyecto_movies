@@ -38,7 +38,7 @@
     <!-- Modal de creación de película -->
     <div id="createMovieModal" class="modal">
         <div class="modal-content">
-            <span class="close-create">&times;</span>
+            <!-- <span class="close-create">&times;</span> -->
             <h2 class="modal-titulo">Crear Película</h2>
             <form id="createMovieForm">
 
@@ -50,13 +50,14 @@
 
                 <div class="contenido-modal-crear">
                     <label class="label-modal-crear" for="createMovieDescription">Descripción:</label><br>
-                    <textarea id="createMyovieDescription" name="createMovieDescription" required></textarea><br>
+                    <textarea id="createMyovieDescription" id="createMovieDescription" name="createMovieDescription"
+                        required></textarea><br>
                 </div>
 
                 <div class="contenido-modal-crear">
-                    <label class="label-modal-crear" for="createMovieReleaseDate">Fecha de Estreno:</label><br>
-                    <input class="input-modal-crear" type="text" id="createMovieReleaseDate"
-                        name="createMovieReleaseDate" required><br>
+                    <label class="label-modal-crear" for="createMovieDate">Fecha de Estreno:</label><br>
+                    <input class="input-modal-crear" type="text" id="createMovieDate" name="createMovieDate"
+                        required><br>
                 </div>
 
                 <div class="contenido-modal-crear">
@@ -77,8 +78,8 @@
                         required>
                 </div>
 
-                <div class="modal-buttons modal-buttons-delete">
-                    <button type="submit" class="admin-btn admin-btn-submit">Crear Película</button>
+                <div class="modal-buttons">
+                    <button type="submit" class="admin-btn admin-btn-submit">Crear</button>
                     <button type="button" class="admin-btn admin-btn-cancel" id="cancelCreate">Cancelar</button>
                 </div>
 
@@ -96,14 +97,21 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2 class="modal-titulo">Detalle de la Película</h2>
-            <p class="p-modal"><strong>ID:</strong> <span id="modalMovieId"></span></p>
-            <p class="p-modal"><strong>Título:</strong> <span id="modalMovieTitle"></span></p>
-            <p class="p-modal"><strong>Descripción:</strong> <span id="modalMovieDescription"></span></p>
-            <p class="p-modal"><strong>Fecha de Estreno:</strong> <span id="modalMovieDate"></span></p>
-            <p class="p-modal"><strong>ID TMDB:</strong> <span id="modalMovieDate"></span></p>
-            <p class="p-modal"><strong>Calificación:</strong> <span id="modalMovieDate"></span></p>
-            <p class="p-modal"><strong>Poster:</strong></p><span id="modalMoviePoster"></span></p>
-            <!-- <img id="modalMoviePoster" src="" alt="Poster de la película" class="modal-poster"> -->
+            <div class="modal-body">
+                <div class="modal-details">
+                    <p class="p-modal"><strong>ID:</strong> <span id="modalMovieId"></span></p>
+                    <p class="p-modal"><strong>Título:</strong> <span id="modalMovieTitle"></span></p>
+                    <p class="p-modal"><strong>Descripción:</strong> <span id="modalMovieDescription"></span></p>
+                    <p class="p-modal"><strong>Fecha de Estreno:</strong> <span id="modalMovieDate"></span></p>
+                    <p class="p-modal"><strong>ID TMDB:</strong> <span id="modalMovieTmdb"></span></p>
+                    <p class="p-modal"><strong>Calificación:</strong> <span id="modalMovieCalif"></span></p>
+                    <p class="p-modal"><strong></strong></p><span id="modalMoviePoster"></span></p>
+                </div>
+
+                <div class="modal-poster"></div>
+
+
+            </div>
         </div>
     </div>
 
@@ -130,8 +138,8 @@
                 </div>
 
                 <div class="contenido-modal-edit">
-                    <label class="label-modal-edit" for="editMovieIDTMDB">ID TMDB:</label>
-                    <input type="text" class="input-modal-edit" id="editMovieIDTMDB" name="movieIDTMDB"></input>
+                    <label class="label-modal-edit" for="editMovieTmdb">ID TMDB:</label>
+                    <input type="text" class="input-modal-edit" id="editMovieTmdb" name="movieTmdb"></input>
                 </div>
 
                 <div class="contenido-modal-edit">
@@ -140,12 +148,14 @@
                 </div>
 
                 <div class="contenido-modal-edit">
-                    <label class="label-modal-edit" for="editMoviePoster">Poster:</label>
-                    <input type="file" id="editMoviePoster" name="moviePoster">
+                    <label class="label-modal-edit" for="editMoviePoster">URL Poster:</label>
+                    <input type="text" id="editMoviePoster" name="moviePoster">
                 </div>
 
-                <button class="btn-modal-edit" type="submit">Guardar Cambios</button>
-                <button type="button" id="cancelEdit" class="admin-btn admin-btn-cancel">Cancelar</button>
+                <div class="modal-buttons">
+                    <button class="admin-btn admin-btn-submit" type="submit">Guardar Cambios</button>
+                    <button class="admin-btn admin-btn-cancel" type="button" id="cancelEdit">Cancelar</button>
+                </div>
             </form>
         </div>
     </div>
@@ -155,7 +165,7 @@
         <div class="modal-content modal-content-delete">
             <h2 class="modal-titulo modal-titulo-delete">Confirmar Eliminación</h2>
             <p>¿Estás seguro de eliminar esta película?</p>
-            <div class="modal-buttons modal-buttons-delete">
+            <div class="modal-buttons">
                 <button class="admin-btn admin-btn-delete-modal" id="confirmDelete">Eliminar</button>
                 <button class="admin-btn admin-btn-cancel" id="cancelDelete">Cancelar</button>
             </div>
@@ -163,7 +173,12 @@
         </div>
     </div>
 
-    <a class="btn-volver" href="admin_panel.html">Volver</a>
+
+
+    <div class="btn-titulo-container1">
+        <a class="btn-volver" href="admin_panel.html">Volver</a>
+
+    </div>
 
     <script src="../js/admin_peliculas.js"></script>
 </body>

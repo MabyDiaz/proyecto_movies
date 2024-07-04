@@ -7,65 +7,53 @@ dotenv.config();
 
 // Crear una nueva película
 export const createMovie = (req, res) => {
-  const { titulo, descripcion, fechaEstreno, director, poster_path } = req.body;
+  const {
+    titulo,
+    descripcion,
+    fecha_de_lanzamiento,
+    id_tmdb,
+    calificacion,
+    poster_path,
+  } = req.body;
 
-  const query =
-    'INSERT INTO peliculas (titulo, descripcion, fechaEstreno, director, poster_path) VALUES (?, ?, ?, ?, ?)';
-  connection.query(
-    query,
-    [titulo, descripcion, fechaEstreno, director, poster_path],
-    (err, results) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ error: 'Error al crear una película' });
-      }
-      res.status(201).json({
-        message: 'Película creada exitosamente',
-        movieId: results.insertId,
-      });
+  // Validación básica de campos obligatorios
+  if (
+    !titulo ||
+    !descripcion ||
+    !fecha_de_lanzamiento ||
+    !id_tmdb ||
+    !calificacion ||
+    !poster_path
+  ) {
+    return res.status(400).json({ error: 'Todos los campos son obligatorios' });
+  }
+
+  // Procesamiento de datos antes de insertar en la base de datos
+  const movieData = {
+    titulo: titulo.trim(),
+    descripcion: descripcion.trim(),
+    fecha_de_lanzamiento: fecha_de_lanzamiento.trim(),
+    director: id_tmdb.trim(),
+    calificacion: calificacion.trim(),
+    poster_path: poster_path.trim(),
+  };
+
+  // Insertar datos en la base de datos
+  const query = 'INSERT INTO movies SET ?';
+
+  connection.query(query, movieData, (error, results, fields) => {
+    if (error) {
+      console.error('Error al insertar la película:', error);
+      return res.status(500).json({ error: 'Error interno del servidor' });
     }
-  );
+
+    console.log('Película creada exitosamente:', results.insertId);
+    return res.status(201).json({
+      message: 'Película creada exitosamente',
+      movieId: results.insertId,
+    });
+  });
 };
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename: function (req, file, cb) {
-    cb(null, `${Date.now()}${path.extname(file.originalname)}`);
-  },
-});
-
-const upload = multer({ storage: storage }).single('poster_path');
-
-// export const createMovie = (req, res) => {
-//   upload(req, res, (err) => {
-//     if (err) {
-//       console.error(err);
-//       return res.status(500).json({ error: 'Error al subir el archivo' });
-//     }
-
-//     const { titulo, descripcion, fechaEstreno, director } = req.body;
-//     const poster_path = req.file ? req.file.path : null;
-
-//     const query =
-//       'INSERT INTO peliculas (titulo, descripcion, fechaEstreno, director, poster_path) VALUES (?, ?, ?, ?, ?)';
-//     connection.query(
-//       query,
-//       [titulo, descripcion, fechaEstreno, director, poster_path],
-//       (err, results) => {
-//         if (err) {
-//           console.error(err);
-//           return res.status(500).json({ error: 'Error al crear una película' });
-//         }
-//         res.status(201).json({
-//           message: 'Película creada exitosamente',
-//           movieId: results.insertId,
-//         });
-//       }
-//     );
-//   });
-// };
 
 // Obtener todas las películas
 export const getAllMovies = (req, res) => {
@@ -145,20 +133,4 @@ export const deleteMovie = (req, res) => {
       .status(200)
       .json({ message: `Película con ID: ${id} eliminada correctamente` });
   });
-};
-
-const getMovies = async (req, res) => {
-  try {
-    const movies = await Movie.findAll();
-    const moviesWithImages = movies.map((movie) => {
-      return {
-        ...movie.dataValues,
-        poster: `/uploads/${movie.poster}`,
-      };
-    });
-    res.json(moviesWithImages);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error fetching movies' });
-  }
 };
