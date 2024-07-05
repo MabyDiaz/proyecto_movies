@@ -33,13 +33,13 @@ export const createMovie = (req, res) => {
     titulo: titulo.trim(),
     descripcion: descripcion.trim(),
     fecha_de_lanzamiento: fecha_de_lanzamiento.trim(),
-    director: id_tmdb.trim(),
+    id_tmdb: id_tmdb.trim(),
     calificacion: calificacion.trim(),
     poster_path: poster_path.trim(),
   };
 
   // Insertar datos en la base de datos
-  const query = 'INSERT INTO movies SET ?';
+  const query = 'INSERT INTO peliculas SET ?';
 
   connection.query(query, movieData, (error, results, fields) => {
     if (error) {
@@ -63,6 +63,7 @@ export const getAllMovies = (req, res) => {
       console.error(err);
       return res.status(500).json({ error: 'Error al obtener películas' });
     }
+    console.log('Results:', results);
     res.status(200).json(results);
   });
 };

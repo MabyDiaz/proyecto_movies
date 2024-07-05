@@ -67,20 +67,20 @@ app.get('/register', (req, res) => {
 });
 
 // Rutas POST
-app.post('/register', createUser); // para registrar un nuevo usuario
-app.post('/login', loginUser); // para iniciar sesión
+app.post('/register', createUser); 
+app.post('/login', loginUser); 
 
 // Endpoint para subir imágenes
 app.post('/upload', upload.single('file'), (req, res) => {
-  // Aquí puedes procesar el archivo subido si es necesario
+  
   res.json({ filename: req.file.filename }); // Devuelve el nombre del archivo guardado
 });
 
 
 // Endpoint para subir imágenes
 app.post('/upload', upload.single('file'), (req, res) => {
-  // Aquí puedes procesar el archivo subido si es necesario
-  res.json({ filename: req.file.filename }); // Devuelve el nombre del archivo guardado
+  
+  res.json({ filename: req.file.filename }); 
 });
 
 
