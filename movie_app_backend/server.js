@@ -1,3 +1,5 @@
+
+
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -8,7 +10,6 @@ import moviesRoutes from './routes/movies_routes.js';
 import { createUser, loginUser } from './controllers/usuario_controller.js';
 import dotenv from 'dotenv';
 import session from 'express-session';
-import dbConnection from './db.js';
 import multer from 'multer';
 
 dotenv.config(); // Cargar variables de entorno desde .env
@@ -43,7 +44,6 @@ app.use(
     secret: 'secret-key',
     resave: false,
     saveUninitialized: false,
-    store: sessionStore,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24,
     },
@@ -76,11 +76,13 @@ app.post('/upload', upload.single('file'), (req, res) => {
   res.json({ filename: req.file.filename }); // Devuelve el nombre del archivo guardado
 });
 
+
 // Endpoint para subir imágenes
 app.post('/upload', upload.single('file'), (req, res) => {
   // Aquí puedes procesar el archivo subido si es necesario
   res.json({ filename: req.file.filename }); // Devuelve el nombre del archivo guardado
 });
+
 
 // Usar rutas de usuarios
 app.use('/', userRoutes);
