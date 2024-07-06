@@ -100,48 +100,6 @@ function fetchUsers() {
     .catch((error) => console.error('Error fetching users:', error));
 }
 
-function viewUser(userId) {
-  fetch(`${API_BASE_URL}/users/${userId}`)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then((user) => {
-      document.getElementById('modalUserId').innerText = user.id;
-      document.getElementById('modalUserName').innerText = user.nombre;
-      document.getElementById('modalUserSurname').innerText = user.apellido;
-      document.getElementById('modalUserEmail').innerText = user.email;
-      document.getElementById('modalUserBirthdate').innerText =
-        user.fechaNacimiento;
-      document.getElementById('modalUserCountry').innerText = user.pais;
-      document.getElementById('modalUserIsAdmin').innerText = user.isAdmin
-        ? 'Sí'
-        : 'No';
-      document.getElementById('userModal').style.display = 'block';
-    })
-    .catch((error) => console.error('Error fetching user details:', error));
-}
-
-function editUser(userId) {
-  fetch(`${API_BASE_URL}/users/${userId}`)
-    .then((response) => response.json())
-    .then((user) => {
-      document.getElementById('editUserId').value = user.id;
-      document.getElementById('editUserName').value = user.nombre;
-      document.getElementById('editUserSurname').value = user.apellido;
-      document.getElementById('editUserEmail').value = user.email;
-      document.getElementById('editUserBirthdate').value = user.fechaNacimiento;
-      document.getElementById('editUserCountry').value = user.pais;
-      document.getElementById('editUserIsAdmin').checked = user.isAdmin;
-
-      const editUserModal = document.getElementById('editUserModal');
-      editUserModal.style.display = 'block';
-    })
-    .catch((error) => console.error('Error fetching user details:', error));
-}
-
 // Manejar el envío del formulario de edición de usuario
 document.getElementById('editUserForm').addEventListener('submit', (event) => {
   event.preventDefault();
@@ -176,6 +134,48 @@ document.getElementById('editUserForm').addEventListener('submit', (event) => {
     })
     .catch((error) => console.error('Error:', error));
 });
+
+function viewUser(userId) {
+  fetch(`${API_BASE_URL}/users/${userId}`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then((user) => {
+      document.getElementById('modalUserId').innerText = user.id;
+      document.getElementById('modalUserName').innerText = user.nombre;
+      document.getElementById('modalUserSurname').innerText = user.apellido;
+      document.getElementById('modalUserEmail').innerText = user.email;
+      document.getElementById('modalUserBirthdate').innerText =
+        user.fechaNacimiento;
+      document.getElementById('modalUserCountry').innerText = user.pais;
+      document.getElementById('modalUserIsAdmin').innerText = user.isAdmin
+        ? 'Sí'
+        : 'No';
+      document.getElementById('userModal').style.display = 'block';
+    })
+    .catch((error) => console.error('Error fetching user details:', error));
+}
+
+function editUser(userId) {
+  fetch(`${API_BASE_URL}users/${userId}`)
+    .then((response) => response.json())
+    .then((user) => {
+      document.getElementById('editUserId').value = user.id;
+      document.getElementById('editUserName').value = user.nombre;
+      document.getElementById('editUserSurname').value = user.apellido;
+      document.getElementById('editUserEmail').value = user.email;
+      document.getElementById('editUserBirthdate').value = user.fechaNacimiento;
+      document.getElementById('editUserCountry').value = user.pais;
+      document.getElementById('editUserIsAdmin').checked = user.isAdmin;
+
+      const editUserModal = document.getElementById('editUserModal');
+      editUserModal.style.display = 'block';
+    })
+    .catch((error) => console.error('Error fetching user details:', error));
+}
 
 function updateUser() {
   const userId = document.getElementById('userId').value;
