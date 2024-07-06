@@ -38,7 +38,7 @@ app.use(
   cors({
     origin:
       process.env.NODE_ENV === 'production'
-        ? 'https://https://proyecto-movies-7vlw.onrender.com'
+        ? 'https://proyecto-movies-7vlw.onrender.com'
         : 'http://localhost:3000',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],

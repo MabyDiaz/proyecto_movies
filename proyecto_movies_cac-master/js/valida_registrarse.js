@@ -1,6 +1,6 @@
 const isProduction = window.location.hostname.includes('render.com');
 const API_BASE_URL = isProduction
-  ? 'https://https://proyecto-movies-7vlw.onrender.com'
+  ? 'https://proyecto-movies-7vlw.onrender.com'
   : 'http://localhost:3000';
 
 document.addEventListener('DOMContentLoaded', () => {
