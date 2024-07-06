@@ -1,3 +1,8 @@
+const API_BASE_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://https://proyecto-movies-7vlw.onrender.com'
+    : 'http://localhost:3000';
+
 document.addEventListener('DOMContentLoaded', () => {
   fetchMovies();
 
@@ -82,7 +87,7 @@ const successMessage = document.getElementById('success-message');
 
 // Función para obtener y mostrar películas
 function fetchMovies() {
-  fetch('http://localhost:3000/movies')
+  fetch(`${API_BASE_URL}/movies`)
     .then((response) => response.json())
     .then((movies) => {
       const movieList = document.getElementById('movie-list');
@@ -125,7 +130,7 @@ document
     const movieCalif = document.getElementById('createMovieCalif').value;
     const moviePoster = document.getElementById('createMoviePoster').value;
 
-    fetch('http://localhost:3000/movies', {
+    fetch(`${API_BASE_URL}/movies`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -171,7 +176,7 @@ document.getElementById('editMovieForm').addEventListener('submit', (event) => {
   const movieCalif = document.getElementById('editMovieCalif').value;
   const moviePoster = document.getElementById('editMoviePoster').value;
 
-  fetch(`http://localhost:3000/movies/${movieId}`, {
+  fetch(`${API_BASE_URL}/movies/${movieId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -196,7 +201,7 @@ document.getElementById('editMovieForm').addEventListener('submit', (event) => {
 
 // Función para ver detalles de una película
 function viewMovie(movieId) {
-  fetch(`http://localhost:3000/movies/${movieId}`)
+  fetch(`${API_BASE_URL}/movies/${movieId}`)
     .then((response) => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -226,7 +231,7 @@ function viewMovie(movieId) {
 
 // Función para editar una película
 function editMovie(movieId) {
-  fetch(`http://localhost:3000/movies/${movieId}`)
+  fetch(`${API_BASE_URL}/movies/${movieId}`)
     .then((response) => response.json())
     .then((movie) => {
       document.getElementById('editMovieId').value = movie.id;
@@ -258,7 +263,7 @@ function confirmDeleteMovie(movieId) {
 
 // Función para eliminar una película
 function deleteMovie(movieId) {
-  fetch(`http://localhost:3000/movies/${movieId}`, {
+  fetch(`${API_BASE_URL}/movies/${movieId}`, {
     method: 'DELETE',
   })
     .then((response) => response.json())

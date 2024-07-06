@@ -1,3 +1,8 @@
+const API_BASE_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://https://proyecto-movies-7vlw.onrender.com'
+    : 'http://localhost:3000';
+
 // Espera a que el DOM se cargue completamente
 document.addEventListener('DOMContentLoaded', () => {
   // Selecciona el formulario en el DOM
@@ -9,7 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Si la validación del formulario no es exitosa
     if (!validateForm()) {
       // Muestra un mensaje en la consola indicando que el formulario no es válido
-      console.log('El formulario no es válido. Por favor, corrige los errores.');
+      console.log(
+        'El formulario no es válido. Por favor, corrige los errores.'
+      );
     } else {
       // Si la validación del formulario es exitosa, muestra un mensaje en la consola
       console.log('El formulario es válido. Enviar datos...');
@@ -20,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       try {
         // Realiza la solicitud fetch para enviar los datos de inicio de sesión
-        const response = await fetch('http://localhost:3000/login', {
+        const response = await fetch(`${API_BASE_URL}/login`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -30,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
             password: password,
           }),
         });
-        
+
         const data = await response.json();
 
         if (response.ok) {
@@ -55,8 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // Función para validar todo el formulario
   const validateForm = () => {
     let isValid = true;
-    isValid = validateEmailField('email', 'El correo electrónico no es válido') && isValid; // Validar campo de email
-    isValid = validateField('password', 'La contraseña es obligatoria') && isValid; // Validar campo de contraseña
+    isValid =
+      validateEmailField('email', 'El correo electrónico no es válido') &&
+      isValid; // Validar campo de email
+    isValid =
+      validateField('password', 'La contraseña es obligatoria') && isValid; // Validar campo de contraseña
     return isValid;
   };
 

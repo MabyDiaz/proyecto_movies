@@ -1,3 +1,8 @@
+const API_BASE_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://https://proyecto-movies-7vlw.onrender.com'
+    : 'http://localhost:3000';
+
 document.addEventListener('DOMContentLoaded', () => {
   fetchUsers();
 
@@ -65,7 +70,7 @@ window.onclick = function (event) {
 };
 
 function fetchUsers() {
-  fetch('http://localhost:3000/users')
+  fetch(`${API_BASE_URL}/users`)
     .then((response) => response.json())
     .then((users) => {
       const userList = document.getElementById('user-list');
@@ -99,7 +104,7 @@ function fetchUsers() {
 }
 
 function viewUser(userId) {
-  fetch(`http://localhost:3000/users/${userId}`)
+  fetch(`${API_BASE_URL}/users/${userId}`)
     .then((response) => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -123,7 +128,7 @@ function viewUser(userId) {
 }
 
 function editUser(userId) {
-  fetch(`http://localhost:3000/users/${userId}`)
+  fetch(`${API_BASE_URL}/users/${userId}`)
     .then((response) => response.json())
     .then((user) => {
       document.getElementById('editUserId').value = user.id;
@@ -152,7 +157,7 @@ document.getElementById('editUserForm').addEventListener('submit', (event) => {
   const userCountry = document.getElementById('editUserCountry').value;
   const userIsAdmin = document.getElementById('editUserIsAdmin').checked;
 
-  fetch(`http://localhost:3000/users/${userId}`, {
+  fetch(`${API_BASE_URL}/users/${userId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -185,7 +190,7 @@ function updateUser() {
     pais: document.getElementById('pais').value,
   };
 
-  fetch(`http://localhost:3000/users/${userId}`, {
+  fetch(`${API_BASE_URL}/users/${userId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -203,7 +208,6 @@ function updateUser() {
     });
 }
 
-
 //Eliminar pelicula
 function confirmDeleteUser(userId) {
   document.getElementById('confirmDelete').onclick = function () {
@@ -217,7 +221,7 @@ function confirmDeleteUser(userId) {
 }
 
 function deleteUser(userId) {
-  fetch(`http://localhost:3000/users/${userId}`, {
+  fetch(`${API_BASE_URL}/users/${userId}`, {
     method: 'DELETE',
   })
     .then((response) => response.json())

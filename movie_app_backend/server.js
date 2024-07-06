@@ -16,17 +16,6 @@ dotenv.config(); // Cargar variables de entorno desde .env
 const app = express();
 const port = process.env.PORT || 3000;
 
-// app.get('/ping', async (req, res) => {
-//   try {
-//     const [result] = await pool.query('SELECT "hello world" as RESULT');
-//     console.log(result);
-//     res.send('Bienvenido al servidor de Movie App');
-//   } catch (error) {
-//     console.error('Error executing query:', error);
-//     res.status(500).send('Error en el servidor');
-//   }
-// });
-
 // Configurar multer para manejar las cargas de archivos
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -43,7 +32,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: '*',
+    origin:
+      process.env.NODE_ENV === 'production'
+        ? 'https://https://proyecto-movies-7vlw.onrender.com'
+        : 'http://localhost:3000',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })

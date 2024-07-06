@@ -1,3 +1,8 @@
+const API_BASE_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://https://proyecto-movies-7vlw.onrender.com'
+    : 'http://localhost:3000';
+
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.querySelector('form');
   const successMessage = document.getElementById('success-message');
@@ -23,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     try {
-      const response = await fetch('http://localhost:3000/register', {
+      const response = await fetch(`${API_BASE_URL}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -44,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Redirigir después de un pequeño retraso
       setTimeout(() => {
-        window.location.href = 'http://localhost:3000/pages/iniciosesion.html';
+        window.location.href = `${API_BASE_URL}/pages/iniciosesion.html`;
       }, 1500); // Redirige después de 3 segundos
     } catch (error) {
       console.error('Error al registrar usuario:', error);
