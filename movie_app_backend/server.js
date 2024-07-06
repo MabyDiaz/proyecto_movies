@@ -7,7 +7,6 @@ import userRoutes from './routes/usuario_routes.js';
 import moviesRoutes from './routes/movies_routes.js';
 import { createUser, loginUser } from './controllers/usuario_controller.js';
 import dotenv from 'dotenv';
-import pool from './db.js';
 import session from 'express-session';
 import multer from 'multer';
 
@@ -16,20 +15,7 @@ dotenv.config(); // Cargar variables de entorno desde .env
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Probar la conexión a la base de datos
-(async () => {
-  try {
-    const connection = await pool.getConnection();
-    console.log('Conexión a la base de datos exitosa');
-    connection.release();
-  } catch (error) {
-    console.error('Error al conectar a la base de datos:', error);
-  }
-})();
-
 const isProduction = process.env.NODE_ENV === 'production';
-const DB_HOST = isProduction ? process.env.PROD_DB_HOST : process.env.DB_HOST;
-const PORT = isProduction ? process.env.PROD_PORT : process.env.PORT;
 
 // Configurar multer para manejar las cargas de archivos
 const storage = multer.diskStorage({
@@ -47,10 +33,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin:
-      process.env.NODE_ENV === 'production'
-        ? 'https://proyecto-movies-7vlw.onrender.com'
-        : 'http://localhost:3000',
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
