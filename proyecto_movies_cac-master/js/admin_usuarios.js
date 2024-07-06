@@ -107,7 +107,7 @@ function fetchUsers() {
 //   const userId = document.getElementById('editUserId').value;
 //   const userName = document.getElementById('editUserName').value;
 //   const userSurname = document.getElementById('editUserSurname').value;
-//   const userEmail = document.getElementById('editUserEmail').value;
+//   const userEmail = document.getElementById('editUserEmail').value;//
 //   const userBirthdate = document.getElementById('editUserBirthdate').value;
 //   const userCountry = document.getElementById('editUserCountry').value;
 //   const userIsAdmin = document.getElementById('editUserIsAdmin').checked;
