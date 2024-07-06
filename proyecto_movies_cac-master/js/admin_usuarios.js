@@ -177,35 +177,6 @@ function editUser(userId) {
     .catch((error) => console.error('Error fetching user details:', error));
 }
 
-// function updateUser() {
-//   const userId = document.getElementById('userId').value;
-//   const user = {
-//     nombre: document.getElementById('nombre').value,
-//     apellido: document.getElementById('apellido').value,
-//     email: document.getElementById('email').value,
-//     fechaNacimiento: document.getElementById('fechaNacimiento').value,
-//     pais: document.getElementById('pais').value,
-//     isAdmin: document.getElementById('isAdmin'),
-//   };
-
-//   fetch(`${API_BASE_URL}/users/${userId}`, {
-//     method: 'PUT',
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify(user),
-//   })
-//     .then((response) => response.json())
-//     .then((data) => {
-//       console.log('Success:', data);
-//       document.getElementById('editUserModal').style.display = 'none';
-//       fetchUsers(); // Actualiza la lista de usuarios después de la edición
-//     })
-//     .catch((error) => {
-//       console.error('Error:', error);
-//     });
-// }
-
 //Eliminar pelicula
 function confirmDeleteUser(userId) {
   document.getElementById('confirmDelete').onclick = function () {
