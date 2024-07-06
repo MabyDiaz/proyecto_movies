@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'https://proyecto-movies-7vlw.onrender.com';
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.querySelector('form');

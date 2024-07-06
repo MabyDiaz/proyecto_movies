@@ -1,5 +1,5 @@
 
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'https://proyecto-movies-7vlw.onrender.com';
 
 // Espera a que el DOM se cargue completamente
 document.addEventListener('DOMContentLoaded', () => {
