@@ -15,8 +15,6 @@ dotenv.config(); // Cargar variables de entorno desde .env
 const app = express();
 const port = process.env.PORT || 3000;
 
-const isProduction = process.env.NODE_ENV === 'production';
-
 // Configurar multer para manejar las cargas de archivos
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
