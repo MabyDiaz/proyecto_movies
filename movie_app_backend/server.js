@@ -16,6 +16,17 @@ dotenv.config(); // Cargar variables de entorno desde .env
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Probar la conexión a la base de datos
+(async () => {
+  try {
+    const connection = await pool.getConnection();
+    console.log('Conexión a la base de datos exitosa');
+    connection.release();
+  } catch (error) {
+    console.error('Error al conectar a la base de datos:', error);
+  }
+})();
+
 const isProduction = process.env.NODE_ENV === 'production';
 const DB_HOST = isProduction ? process.env.PROD_DB_HOST : process.env.DB_HOST;
 const PORT = isProduction ? process.env.PROD_PORT : process.env.PORT;
