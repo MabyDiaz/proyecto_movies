@@ -125,7 +125,7 @@ function viewUser(userId) {
 }
 
 function editUser(userId) {
-  fetch(`${API_BASE_URL}/users/${userId}`)
+  fetch(`${API_BASE_URL}users/${userId}`)
     .then((response) => response.json())
     .then((user) => {
       document.getElementById('editUserId').value = user.id;
@@ -185,6 +185,7 @@ function updateUser() {
     email: document.getElementById('email').value,
     fechaNacimiento: document.getElementById('fechaNacimiento').value,
     pais: document.getElementById('pais').value,
+    isAdmin: document.getElementById('isAdmin'),
   };
 
   fetch(`${API_BASE_URL}/users/${userId}`, {
