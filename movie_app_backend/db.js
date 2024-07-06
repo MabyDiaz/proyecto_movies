@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { createConnection } from 'mysql2';
+import { createPool } from 'mysql2/promise';
 
 dotenv.config();
 
@@ -11,14 +11,8 @@ const dbConfig = {
   port: process.env.DB_PORT,
 };
 
-const connection = createConnection(dbConfig);
+const pool = createPool(dbConfig);
 
-connection.connect((err) => {
-  if (err) {
-    console.error('Error connecting to database:', err.stack);
-    return;
-  }
-  console.log('Connected to database as id', connection.threadId);
-});
 
-export default connection;
+
+export default pool;

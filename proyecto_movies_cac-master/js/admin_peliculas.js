@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
   fetchMovies();
-  const successMessage = document.getElementById('success-message');
 
   // Modal de eliminación
   const deleteModal = document.getElementById('deleteConfirmationModal');
@@ -19,6 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
+  window.onclick = function (event) {
+    if (event.target === deleteModal) {
+      deleteModal.style.display = 'none';
+    }
+  };
+
   // Modal de edición
   const editModal = document.getElementById('editMovieModal');
   const closeEditModal = document.querySelector('.close-edit');
@@ -36,41 +41,56 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
-  // Modal de creación
-  const createModal = document.getElementById('createMovieModal');
-  const openCreateModalButton = document.getElementById('openCreateModal');
-  const closeCreateModalButton = document.querySelector('.close-create');
-  const cancelCreateButton = document.getElementById('cancelCreate');
+  window.onclick = function (event) {
+    if (event.target === editModal) {
+      editModal.style.display = 'none';
+    }
+  };
+});
 
-  if (openCreateModalButton) {
-    openCreateModalButton.onclick = function () {
-      createModal.style.display = 'block';
-    };
+// Modal de creación
+const createModal = document.getElementById('createMovieModal');
+const openCreateModalButton = document.getElementById('openCreateModal');
+const closeCreateModalButton = document.querySelector('.close-create');
+const cancelCreateButton = document.getElementById('cancelCreate');
+
+if (openCreateModalButton) {
+  openCreateModalButton.onclick = function () {
+    createModal.style.display = 'block';
+  };
+}
+
+if (closeCreateModalButton) {
+  closeCreateModalButton.onclick = function () {
+    createModal.style.display = 'none';
+  };
+}
+
+if (cancelCreateButton) {
+  cancelCreateButton.onclick = function () {
+    createModal.style.display = 'none';
+  };
+}
+
+window.onclick = function (event) {
+  if (event.target === createModal) {
+    editModal.style.display = 'none';
   }
+};
 
-  if (closeCreateModalButton) {
-    closeCreateModalButton.onclick = function () {
-      createModal.style.display = 'none';
-    };
-  }
+const successMessage = document.getElementById('success-message');
 
-  if (cancelCreateButton) {
-    cancelCreateButton.onclick = function () {
-      createModal.style.display = 'none';
-    };
-  }
+// Función para obtener y mostrar películas
+function fetchMovies() {
+  fetch('http://localhost:3000/movies')
+    .then((response) => response.json())
+    .then((movies) => {
+      const movieList = document.getElementById('movie-list');
+      movieList.innerHTML = ''; // Limpiamos el contenido anterior
 
-  // Función para obtener y mostrar películas
-  function fetchMovies() {
-    fetch('http://localhost:3000/movies')
-      .then((response) => response.json())
-      .then((movies) => {
-        const movieList = document.getElementById('movie-list');
-        movieList.innerHTML = ''; // Limpiamos el contenido anterior
-
-        movies.forEach((movie) => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
+      movies.forEach((movie) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
           <td>${movie.id}</td>
           <td>${movie.titulo}</td>
           <td>${movie.descripcion}</td>
@@ -84,97 +104,94 @@ document.addEventListener('DOMContentLoaded', () => {
             <button class="admin-btn admin-btn-delete" onclick="confirmDeleteMovie(${movie.id})">Eliminar</button>
           </td>
         `;
-          movieList.appendChild(row);
-        });
+        movieList.appendChild(row);
+      });
+    })
+    .catch((error) => console.error('Error fetching movies:', error));
+}
+
+// Manejar el envío del formulario de creación de película
+document
+  .getElementById('createMovieForm')
+  .addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const movieTitle = document.getElementById('createMovieTitle').value;
+    const movieDescription = document.getElementById(
+      'createMovieDescription'
+    ).value;
+    const movieDate = document.getElementById('createMovieDate').value;
+    const movieIdTmdb = document.getElementById('createMovieTmdb').value;
+    const movieCalif = document.getElementById('createMovieCalif').value;
+    const moviePoster = document.getElementById('createMoviePoster').value;
+
+    fetch('http://localhost:3000/movies', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        titulo: movieTitle,
+        descripcion: movieDescription,
+        fecha_de_lanzamiento: movieDate,
+        id_tmdb: movieIdTmdb,
+        calificacion: movieCalif,
+        poster_path: moviePoster,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Success:', data);
+
+        // Mostrar mensaje de éxito
+        successMessage.style.display = 'block';
+        // Ocultar el mensaje después de 1.5 segundos y cerrar el modal
+        setTimeout(() => {
+          successMessage.style.display = 'none';
+          createModal.style.display = 'none';
+          // Restablecer el formulario
+          document.getElementById('createMovieForm').reset();
+        }, 1500);
+        fetchMovies(); // Actualiza la lista de películas después de crear
       })
-      .catch((error) => console.error('Error fetching movies:', error));
-  }
+      .catch((error) => console.error('Error:', error));
+  });
 
-  // Manejar el envío del formulario de creación de película
-  document
-    .getElementById('createMovieForm')
-    .addEventListener('submit', (event) => {
-      event.preventDefault();
+// Manejar el envío del formulario de edición de película
+document.getElementById('editMovieForm').addEventListener('submit', (event) => {
+  event.preventDefault();
 
-      const movieTitle = document.getElementById('createMovieTitle').value;
-      const movieDescription = document.getElementById(
-        'createMovieDescription'
-      ).value;
-      const movieDate = document.getElementById('createMovieDate').value;
-      const movieIdTmdb = document.getElementById('createMovieTmdb').value;
-      const movieCalif = document.getElementById('createMovieCalif').value;
-      const moviePoster = document.getElementById('createMoviePoster').value;
+  const movieId = document.getElementById('editMovieId').value;
+  const movieTitle = document.getElementById('editMovieTitle').value;
+  const movieDescription = document.getElementById(
+    'editMovieDescription'
+  ).value;
+  const movieDate = document.getElementById('editMovieDate').value;
+  const movieTmdb = document.getElementById('editMovieTmdb').value;
+  const movieCalif = document.getElementById('editMovieCalif').value;
+  const moviePoster = document.getElementById('editMoviePoster').value;
 
-      fetch('http://localhost:3000/movies', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          titulo: movieTitle,
-          descripcion: movieDescription,
-          fecha_de_lanzamiento: movieDate,
-          id_tmdb: movieIdTmdb,
-          calificacion: movieCalif,
-          poster_path: moviePoster,
-        }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log('Success:', data);
-
-          // Mostrar mensaje de éxito
-          successMessage.style.display = 'block';
-          // Ocultar el mensaje después de 1.5 segundos y cerrar el modal
-          setTimeout(() => {
-            successMessage.style.display = 'none';
-            createModal.style.display = 'none';
-            // Restablecer el formulario
-            document.getElementById('createMovieForm').reset();
-          }, 1500);
-          fetchMovies(); // Actualiza la lista de películas después de crear
-        })
-        .catch((error) => console.error('Error:', error));
-    });
-
-  // Manejar el envío del formulario de edición de película
-  document
-    .getElementById('editMovieForm')
-    .addEventListener('submit', (event) => {
-      event.preventDefault();
-
-      const movieId = document.getElementById('editMovieId').value;
-      const movieTitle = document.getElementById('editMovieTitle').value;
-      const movieDescription = document.getElementById(
-        'editMovieDescription'
-      ).value;
-      const movieDate = document.getElementById('editMovieDate').value;
-      const movieTmdb = document.getElementById('editMovieTmdb').value;
-      const movieCalif = document.getElementById('editMovieCalif').value;
-      const moviePoster = document.getElementById('editMoviePoster').value;
-
-      fetch(`http://localhost:3000/movies/${movieId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          titulo: movieTitle,
-          descripcion: movieDescription,
-          fecha_de_lanzamiento: movieDate,
-          id_tmdb: movieTmdb,
-          calificacion: movieCalif,
-          poster_path: moviePoster,
-        }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log('Success:', data);
-          document.getElementById('editMovieModal').style.display = 'none';
-          fetchMovies(); // Actualiza la lista de películas después de editar
-        })
-        .catch((error) => console.error('Error:', error));
-    });
+  fetch(`http://localhost:3000/movies/${movieId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      titulo: movieTitle,
+      descripcion: movieDescription,
+      fecha_de_lanzamiento: movieDate,
+      id_tmdb: movieTmdb,
+      calificacion: movieCalif,
+      poster_path: moviePoster,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Success:', data);
+      document.getElementById('editMovieModal').style.display = 'none';
+      fetchMovies(); // Actualiza la lista de películas después de editar
+    })
+    .catch((error) => console.error('Error:', error));
 });
 
 // Función para ver detalles de una película

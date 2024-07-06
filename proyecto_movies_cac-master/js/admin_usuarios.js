@@ -203,6 +203,8 @@ function updateUser() {
     });
 }
 
+
+//Eliminar pelicula
 function confirmDeleteUser(userId) {
   document.getElementById('confirmDelete').onclick = function () {
     deleteUser(userId);

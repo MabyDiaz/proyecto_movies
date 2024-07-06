@@ -1,5 +1,3 @@
-
-
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -9,6 +7,7 @@ import userRoutes from './routes/usuario_routes.js';
 import moviesRoutes from './routes/movies_routes.js';
 import { createUser, loginUser } from './controllers/usuario_controller.js';
 import dotenv from 'dotenv';
+import pool from './db.js';
 import session from 'express-session';
 import multer from 'multer';
 
@@ -16,6 +15,17 @@ dotenv.config(); // Cargar variables de entorno desde .env
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+// app.get('/ping', async (req, res) => {
+//   try {
+//     const [result] = await pool.query('SELECT "hello world" as RESULT');
+//     console.log(result);
+//     res.send('Bienvenido al servidor de Movie App');
+//   } catch (error) {
+//     console.error('Error executing query:', error);
+//     res.status(500).send('Error en el servidor');
+//   }
+// });
 
 // Configurar multer para manejar las cargas de archivos
 const storage = multer.diskStorage({
@@ -67,22 +77,18 @@ app.get('/register', (req, res) => {
 });
 
 // Rutas POST
-app.post('/register', createUser); 
-app.post('/login', loginUser); 
+app.post('/register', createUser);
+app.post('/login', loginUser);
 
 // Endpoint para subir imágenes
 app.post('/upload', upload.single('file'), (req, res) => {
-  
   res.json({ filename: req.file.filename }); // Devuelve el nombre del archivo guardado
 });
 
-
 // Endpoint para subir imágenes
 app.post('/upload', upload.single('file'), (req, res) => {
-  
-  res.json({ filename: req.file.filename }); 
+  res.json({ filename: req.file.filename });
 });
-
 
 // Usar rutas de usuarios
 app.use('/', userRoutes);

@@ -1,4 +1,4 @@
-import connection from '../db.js';
+import pool from '../db.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -16,28 +16,20 @@ export const createUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const query =
       'INSERT INTO usuarios (nombre, apellido, email, password, fechaNacimiento, pais, terminos) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    connection.query(
-      query,
-      [
-        nombre,
-        apellido,
-        email,
-        hashedPassword,
-        fechaNacimiento,
-        pais,
-        terminos,
-      ],
-      (err, results) => {
-        if (err) {
-          console.error(err);
-          return res.status(500).json({ error: 'Error al crear un usuario' });
-        }
-        res.status(201).json({
-          message: 'Usuario creado exitosamente',
-          userId: results.insertId,
-        });
-      }
-    );
+    const [results] = await pool.query(query, [
+      nombre,
+      apellido,
+      email,
+      hashedPassword,
+      fechaNacimiento,
+      pais,
+      terminos,
+    ]);
+
+    res.status(201).json({
+      message: 'Usuario creado exitosamente',
+      userId: results.insertId,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error al registrar usuario' });
@@ -45,92 +37,91 @@ export const createUser = async (req, res) => {
 };
 
 // Obtener todos los usuarios
-export const getAllUsers = (req, res) => {
+export const getAllUsers = async (req, res) => {
   const query = 'SELECT * FROM usuarios';
-  connection.query(query, (err, results) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: 'Error al obtener usuarios' });
-    }
+
+  try {
+    const [results] = await pool.query(query);
     res.status(200).json(results);
-  });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener usuarios' });
+  }
 };
 
 // Obtener un usuario por ID
-export const getUserById = (req, res) => {
+export const getUserById = async (req, res) => {
   const userId = req.params.id;
   const query = 'SELECT * FROM usuarios WHERE id = ?';
-  connection.query(query, [userId], (err, results) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send('Error retrieving user data');
-    } else if (results.length === 0) {
+
+  try {
+    const [results] = await pool.query(query, [userId]);
+    if (results.length === 0) {
       return res.status(404).send('User not found');
     } else {
       return res.json(results[0]);
     }
-  });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error retrieving user data');
+  }
 };
 
-export const updateUser = (req, res) => {
+// Actualizar un usuario
+export const updateUser = async (req, res) => {
   const { id } = req.params;
   const { nombre, apellido, email, fechaNacimiento, pais, isAdmin } = req.body;
 
-  const query = `
-    UPDATE usuarios
-    SET nombre = ?, apellido = ?, email = ?, fechaNacimiento = ?, pais = ?, isAdmin = ?
-    WHERE id = ?
-  `;
+  const query =
+    'UPDATE usuarios SET nombre = ?, apellido = ?, email = ?, fechaNacimiento = ?, pais = ?, isAdmin = ? WHERE id = ?';
 
-  connection.query(
-    query,
-    [nombre, apellido, email, fechaNacimiento, pais, isAdmin, id],
-    (err, results) => {
-      if (err) {
-        console.error(err);
-        return res
-          .status(500)
-          .json({ error: 'Error al actualizar el usuario' });
-      }
-      res.status(200).json({ message: 'Usuario actualizado exitosamente' });
-    }
-  );
+  try {
+    await pool.query(query, [
+      nombre,
+      apellido,
+      email,
+      fechaNacimiento,
+      pais,
+      isAdmin,
+      id,
+    ]);
+    res.status(200).json({ message: 'Usuario actualizado exitosamente' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al actualizar el usuario' });
+  }
 };
 
 // Eliminar un usuario por ID
-export const deleteUser = (req, res) => {
+export const deleteUser = async (req, res) => {
   const { id } = req.params;
   const query = 'DELETE FROM usuarios WHERE id = ?';
-  connection.query(query, [id], (err, results) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: 'Error deleting user' });
-    }
+
+  try {
+    await pool.query(query, [id]);
     res
       .status(200)
       .json({ message: `Usuario con ID: ${id} eliminado correctamente` });
-  });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error deleting user' });
+  }
 };
 
 // Iniciar sesión
-export const loginUser = (req, res) => {
+export const loginUser = async (req, res) => {
   const { email, password } = req.body;
-  console.log('Datos recibidos:', email, password);
 
   const query = 'SELECT * FROM usuarios WHERE email = ?';
 
-  connection.query(query, [email], async (err, results) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: 'Error al iniciar sesión' });
-    }
+  try {
+    const [results] = await pool.query(query, [email]);
 
     if (results.length === 0) {
       return res.status(401).json({ error: 'Email o contraseña incorrectos' });
     }
 
     const user = results[0];
-    console.log('Usuario encontrado:', user);
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
@@ -140,16 +131,16 @@ export const loginUser = (req, res) => {
     req.session.userId = user.id;
     req.session.username = user.nombre;
     req.session.isAdmin = user.isAdmin;
-    console.log('Sesión creada:', req.session);
 
     const token = jwt.sign({ id: user.id, isAdmin: user.isAdmin }, SECRET_KEY, {
       expiresIn: '1h',
     });
-    console.log('Token generado:', token);
 
-    // Redirigir al usuario al index.html después de iniciar sesión
     res
       .status(200)
       .json({ token, isAdmin: user.isAdmin, redirectTo: '/index.html' });
-  });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al iniciar sesión' });
+  }
 };
