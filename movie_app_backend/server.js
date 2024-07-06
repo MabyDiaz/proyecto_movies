@@ -73,11 +73,6 @@ app.post('/upload', upload.single('file'), (req, res) => {
   res.json({ filename: req.file.filename }); // Devuelve el nombre del archivo guardado
 });
 
-// Endpoint para subir imágenes
-app.post('/upload', upload.single('file'), (req, res) => {
-  res.json({ filename: req.file.filename });
-});
-
 // Usar rutas de usuarios
 app.use('/', userRoutes);
 app.use('/', moviesRoutes);
