@@ -100,40 +100,40 @@ function fetchUsers() {
     .catch((error) => console.error('Error fetching users:', error));
 }
 
-// Manejar el envío del formulario de edición de usuario
-// document.getElementById('editUserForm').addEventListener('submit', (event) => {
-//   event.preventDefault();
+//Manejar el envío del formulario de edición de usuario
+document.getElementById('editUserForm').addEventListener('submit', (event) => {
+  event.preventDefault();
 
-//   const userId = document.getElementById('editUserId').value;
-//   const userName = document.getElementById('editUserName').value;
-//   const userSurname = document.getElementById('editUserSurname').value;
-//   const userEmail = document.getElementById('editUserEmail').value;//
-//   const userBirthdate = document.getElementById('editUserBirthdate').value;
-//   const userCountry = document.getElementById('editUserCountry').value;
-//   const userIsAdmin = document.getElementById('editUserIsAdmin').checked;
+  const userId = document.getElementById('editUserId').value;
+  const userName = document.getElementById('editUserName').value;
+  const userSurname = document.getElementById('editUserSurname').value;
+  const userEmail = document.getElementById('editUserEmail').value; //
+  const userBirthdate = document.getElementById('editUserBirthdate').value;
+  const userCountry = document.getElementById('editUserCountry').value;
+  const userIsAdmin = document.getElementById('editUserIsAdmin').checked;
 
-//   fetch(`${API_BASE_URL}/users/${userId}`, {
-//     method: 'PUT',
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify({
-//       nombre: userName,
-//       apellido: userSurname,
-//       email: userEmail,
-//       fechaNacimiento: userBirthdate,
-//       pais: userCountry,
-//       isAdmin: userIsAdmin,
-//     }),
-//   })
-//     .then((response) => response.json())
-//     .then((data) => {
-//       console.log('Success:', data);
-//       document.getElementById('editUserModal').style.display = 'none';
-//       fetchUsers(); // Actualiza la lista de usuarios después de editar
-//     })
-//     .catch((error) => console.error('Error:', error));
-// });
+  fetch(`${API_BASE_URL}/users/${userId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      nombre: userName,
+      apellido: userSurname,
+      email: userEmail,
+      fechaNacimiento: userBirthdate,
+      pais: userCountry,
+      isAdmin: userIsAdmin,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Success:', data);
+      document.getElementById('editUserModal').style.display = 'none';
+      fetchUsers(); // Actualiza la lista de usuarios después de editar
+    })
+    .catch((error) => console.error('Error:', error));
+});
 
 function viewUser(userId) {
   fetch(`${API_BASE_URL}/users/${userId}`)
@@ -177,34 +177,34 @@ function editUser(userId) {
     .catch((error) => console.error('Error fetching user details:', error));
 }
 
-function updateUser() {
-  const userId = document.getElementById('userId').value;
-  const user = {
-    nombre: document.getElementById('nombre').value,
-    apellido: document.getElementById('apellido').value,
-    email: document.getElementById('email').value,
-    fechaNacimiento: document.getElementById('fechaNacimiento').value,
-    pais: document.getElementById('pais').value,
-    isAdmin: document.getElementById('isAdmin'),
-  };
+// function updateUser() {
+//   const userId = document.getElementById('userId').value;
+//   const user = {
+//     nombre: document.getElementById('nombre').value,
+//     apellido: document.getElementById('apellido').value,
+//     email: document.getElementById('email').value,
+//     fechaNacimiento: document.getElementById('fechaNacimiento').value,
+//     pais: document.getElementById('pais').value,
+//     isAdmin: document.getElementById('isAdmin'),
+//   };
 
-  fetch(`${API_BASE_URL}/users/${userId}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(user),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log('Success:', data);
-      document.getElementById('editUserModal').style.display = 'none';
-      fetchUsers(); // Actualiza la lista de usuarios después de la edición
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-}
+//   fetch(`${API_BASE_URL}/users/${userId}`, {
+//     method: 'PUT',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify(user),
+//   })
+//     .then((response) => response.json())
+//     .then((data) => {
+//       console.log('Success:', data);
+//       document.getElementById('editUserModal').style.display = 'none';
+//       fetchUsers(); // Actualiza la lista de usuarios después de la edición
+//     })
+//     .catch((error) => {
+//       console.error('Error:', error);
+//     });
+// }
 
 //Eliminar pelicula
 function confirmDeleteUser(userId) {
