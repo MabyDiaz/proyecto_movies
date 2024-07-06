@@ -125,7 +125,7 @@ function viewUser(userId) {
 }
 
 function editUser(userId) {
-  fetch(`${API_BASE_URL}users/${userId}`)
+  fetch(`${API_BASE_URL}/users/${userId}`)
     .then((response) => response.json())
     .then((user) => {
       document.getElementById('editUserId').value = user.id;
